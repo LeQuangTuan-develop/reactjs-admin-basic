@@ -1,42 +1,22 @@
-.productList{
+.PostList {
     flex: 1;
     padding: 40px 40px;
 }
-
-.productListItem{
+  
+.PostListPost {
     display: flex;
     align-items: center;
 }
 
-.productHeader {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.productTitleBox {
-    display: flex;
-    align-items: center;
-    margin-bottom: 30px;
-}
-
-.addProductTitle {
-    margin-left: 20px;
-}
-
-.productIconBack {
-    cursor: pointer;
-}
-
-.productListImg {
+.PostListImg {
     width: 32px;
     height: 32px;
     border-radius: 50%;
     object-fit: cover;
     margin-right: 10px;
-  }
+}
 
-.productListEdit{
+.PostListEdit{
     border: none;
     border-radius: 10px;
     padding: 5px 10px;
@@ -46,19 +26,19 @@
     margin-right: 20px;
 }
 
-.productListDelete{
+.PostListDelete{
     color: red;
     cursor: pointer;
 }
 
-.doctorListControll {
+.PostListControll {
     display: flex;
     align-items: center;
     justify-content: flex-end;
     margin: 10px;
 }
 
-.btnAddDoctor {
+.btnAddPost {
     background-color: darkblue;
     border-radius: 50px;
     border: none;

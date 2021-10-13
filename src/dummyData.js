@@ -288,15 +288,27 @@ export const userRows = [
 
 export const productData = [
     {
-        name: "Jan",
-        "Sales": 4000,
+        name: "Tháng 5",
+        "Sales": 2000,
     },
     {
-        name: "Feb",
+        name: "Tháng 6",
+        "Sales": 1200,
+    },
+    {
+        name: "Tháng 7",
+        "Sales": 3200,
+    },
+    {
+        name: "Tháng 8",
+        "Sales": 6000,
+    },
+    {
+        name: "Tháng 9",
         "Sales": 3000,
     },
     {
-        name: "Mar",
+        name: "Tháng 10",
         "Sales": 5000,
     },
 ];

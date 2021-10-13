@@ -1,0 +1,49 @@
+.form-control {
+    margin: 20px 0;
+}
+
+.form {
+
+}
+
+.buttonSubmit {
+    padding: 8px 20px;
+    background-color: #3f51b5;
+    outline: none;
+    color: #fff;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.selectForm {
+    width: 100%;
+    padding: 18px;
+}
+
+.form-group {
+    width: 48%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.form-control {
+    width: 100%; 
+}
+
+.inputForm {
+    width: 100%;
+}
+
+.form-group-custom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.textarea {
+    margin: 10px 0;
+    width: 100%;
+}

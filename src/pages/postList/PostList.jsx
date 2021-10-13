@@ -1,35 +1,35 @@
 import "./userList.css"
 import { DataGrid } from '@mui/x-data-grid';
-// import { DeleteOutline } from "@mui/icons-material";
+import { DeleteOutline } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Api from "../../util/Api"
 
-export default function UserList() {
+export default function DoctorList() {
     const [data, setData] = useState([])
 
-    // const handleDelete = (id) => {
-    //     setData(data.filter(item => item._id !== id))
-    // }
+    const handleDelete = (id) => {
+        setData(data.filter(item => item._id !== id))
+    }
 
     useEffect(() => {
-        const fetchUsers = async () => {
-            const users = await Api.get('/users/all')
-            setData(users.data)
+        const fetchPosts = async () => {
+            const posts = await Api.get('/posts/all')
+            setData(posts.data)
         }
-        fetchUsers()
+        fetchPosts()
     }, [])
 
     const columns = [
-        { field: 'id', headerName: 'STT', width: 100 },
+        // { field: 'id', headerName: 'STT', width: 100 },
         { 
             field: "username", 
             headerName: "Khách hàng",
             width: 200,
             renderCell: (params) => {
                 return (
-                    <div className="userListUser">
-                        <img className="userListImg" src={params.row.profilePicture} alt="" />
+                    <div className="PostListPost">
+                        <img className="PostListImg" src={params.row.profilePicture} alt="" />
                         {params.row.username}
                     </div>
                 )
@@ -51,19 +51,19 @@ export default function UserList() {
             return (
                 <>
                 <Link to={'/user/' + params.row._id}>
-                    <button className="userListEdit">Chỉnh sửa</button>
+                    <button className="PostListEdit">Chỉnh sửa</button>
                 </Link>
-                {/* <DeleteOutline className="userListDelete" onClick={() => handleDelete(params.row._id)}/> */}
+                <DeleteOutline className="PostListDelete" onClick={() => handleDelete(params.row._id)}/>
                 </>
             )
         }}
     ];
 
     return (
-        <div className="userList" style={{ height: 550, width: '100%' }}>
-            <div className="userListControll">
-                <Link to={`/newUser`}>
-                <button className="btnAddUser">Thêm mới</button>
+        <div className="PostList" style={{ height: 550, width: '100%' }}>
+            <div className="PostListControll">
+                <Link to={`/newPost`}>
+                <button className="btnAddPost">Thêm mới</button>
                 </Link>
             </div>
             <DataGrid

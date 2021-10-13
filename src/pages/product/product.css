@@ -9,10 +9,23 @@
     justify-content: space-between;
 }
 
+.productTitle {
+    margin-left: 20px;
+}
+
+.productTitleBox {
+    display: flex;
+    align-items: center;
+}
+
+.productIconBack {
+    cursor: pointer;
+}
+
 .productAddButton {
-    width: 80px;
+    width: 120px;
     border: none;
-    padding: 5px;
+    padding: 10px;
     background-color: teal;
     color: white;
     border-radius: 5px;
@@ -50,6 +63,7 @@
 }
 
 .productName {
+    font-size: 20px;
     font-weight: 600;   
 }
 
@@ -58,13 +72,14 @@
 }
 
 .productInfoItem {
-    width: 150px;
+    max-width: 220px;
+    margin: 10px 0;
     display: flex;
     justify-content: space-between;
 }
 
 .productInfoValue {
-    font-weight: 300;
+    font-weight: 500;
 }
 
 .productBottom {

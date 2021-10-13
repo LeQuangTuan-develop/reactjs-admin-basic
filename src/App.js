@@ -13,6 +13,7 @@ import NewUser from "./pages/newUser/NewUser";
 import ProductList from "./pages/productList/ProductList";
 import Product from "./pages/product/Product";
 import NewProduct from "./pages/newProduct/NewProduct";
+import Test from "./pages/test/Test";
 
 function App() {
   return (
@@ -21,6 +22,9 @@ function App() {
       <div className="container">
         <Sidebar />
         <Switch>
+          <Route path="/test">
+            <Test />
+          </Route>
           <Route path="/user/:userId">
             <User />
           </Route>
@@ -30,13 +34,13 @@ function App() {
           <Route path="/newUser">
             <NewUser />
           </Route>
-          <Route path="/products">
+          <Route path="/doctors">
             <ProductList />
           </Route>
-          <Route path="/product/:productId">
+          <Route path="/doctor/:doctorId">
             <Product />
           </Route>
-          <Route path="/newProduct">
+          <Route path="/newDoctor">
             <NewProduct />
           </Route>
           <Route path="/" >

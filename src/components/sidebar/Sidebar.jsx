@@ -5,13 +5,13 @@ import {
     TrendingUp,
     PermIdentity,
     Storefront,
-    AttachMoney,
     BarChart,
     MailOutline,
     DynamicFeed,
     ChatBubbleOutline,
     WorkOutline,
     Report, 
+    Feed
 } from '@mui/icons-material';
 import { Link } from "react-router-dom";
 
@@ -20,17 +20,17 @@ export default function Sidebar() {
         <div className="sidebar">
             <div className="sidebarWrapper">
                 <div className="sidebarMenu">
-                    <h3 className="sidebarTitle">Dashboard</h3>
+                    <h3 className="sidebarTitle">Bảng điều khiển</h3>
                     <ul className="sidebarList">
                     <Link to="/" className="link">
                         <li className="sidebarListItem active">
                             <LineStyle className="sidebarIcon" />
-                            Home
+                            Trang chủ
                         </li>
                     </Link>
                     <li className="sidebarListItem">
                     <Timeline className="sidebarIcon" />
-                    Analytics
+                    Thống kê
                     </li>
                     <li className="sidebarListItem">
                     <TrendingUp className="sidebarIcon" />
@@ -39,61 +39,63 @@ export default function Sidebar() {
                     </ul>
                 </div>
                 <div className="sidebarMenu">
-                    <h3 className="sidebarTitle">Quick Menu</h3>
+                    <h3 className="sidebarTitle">Quản lý</h3>
                     <ul className="sidebarList">
                         <Link to="/users" className="link">
                             <li className="sidebarListItem">
                                 <PermIdentity className="sidebarIcon" />
-                                Users
+                                Khách hàng
                             </li>
                         </Link>
-                        <Link to="/products" className="link">
+                        <Link to="/doctors" className="link">
                             <li className="sidebarListItem">
                                 <Storefront className="sidebarIcon" />
-                                Products
+                                Bác sĩ
                             </li>
                         </Link>
+                        <Link to="/test" className="link">
                         <li className="sidebarListItem">
-                            <AttachMoney className="sidebarIcon" />
-                            Transactions
+                            <Feed className="sidebarIcon" />
+                            Bài viết
                         </li>
+                        </Link>
                         <li className="sidebarListItem">
                             <BarChart className="sidebarIcon" />
-                            Reports
+                            Báo cáo
                         </li>
                     </ul>
                 </div>
                 <div className="sidebarMenu">
-                    <h3 className="sidebarTitle">Notifications</h3>
+                    <h3 className="sidebarTitle">Thông báo</h3>
                     <ul className="sidebarList">
                         <li className="sidebarListItem">
                             <MailOutline className="sidebarIcon" />
-                            Mail
+                            email
                         </li>
                         <li className="sidebarListItem">
                             <DynamicFeed className="sidebarIcon" />
-                            Feedback
+                            Phản hồi
                         </li>
                         <li className="sidebarListItem">
                             <ChatBubbleOutline className="sidebarIcon" />
-                            Messages
+                            Tin nhắn
                         </li>
                     </ul>
                 </div>
                 <div className="sidebarMenu">
-                    <h3 className="sidebarTitle">Staff</h3>
+                    <h3 className="sidebarTitle">Nhân viên</h3>
                     <ul className="sidebarList">
                         <li className="sidebarListItem">
                             <WorkOutline className="sidebarIcon" />
-                            Manage
+                            Quản lý
                         </li>
                         <li className="sidebarListItem">
                             <Timeline className="sidebarIcon" />
-                            Analytics
+                            Phân tích
                         </li>
                         <li className="sidebarListItem">
                             <Report className="sidebarIcon" />
-                            Reports
+                            Báo cáo
                         </li>
                     </ul>
                 </div>

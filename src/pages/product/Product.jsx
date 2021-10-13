@@ -1,75 +1,179 @@
-import { Link } from "react-router-dom";
-import "./product.css";
+import { Link } from "react-router-dom"
+import "./product.css"
 import SimpleLineChart from "../../components/chart/SimpleLineChart"
-import {productData} from "../../dummyData"
-import { Publish } from "@mui/icons-material";
+import { productData } from "../../dummyData"
+import { Publish, Cancel, KeyboardBackspace } from "@mui/icons-material"
+import { useHistory, useParams } from "react-router"
+import { useEffect, useState } from "react"
+import Api from "../../util/Api"
+import Moment from 'react-moment'
+import { inputDoctor, schema } from "../../static/inputDoctor"
+import FormUpdate from "../../components/inputs/FormUpdate"
+import storage from '../../firebase'
+import { ref, uploadBytes, getDownloadURL, deleteObject  } from "firebase/storage";
 
 export default function Product() {
-  return (
-    <div className="product">
-      <div className="productTitleContainer">
-        <h1 className="productTitle">Product</h1>
-        <Link to="/newproduct">
-          <button className="productAddButton">Create</button>
-        </Link>
-      </div>
-      <div className="productTop">
-          <div className="productTopLeft">
-              <SimpleLineChart data={productData} dataKey={["Sales"]} title="Sales Performance" color={["green"]}/>
-          </div>
-          <div className="productTopRight">
-              <div className="productInfoTop">
-                  <img src="https://images.pexels.com/photos/7156886/pexels-photo-7156886.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" alt="" className="productInfoImg" />
-                  <span className="productName">Apple Airpods</span>
-              </div>
-              <div className="productInfoBottom">
-                  <div className="productInfoItem">
-                      <span className="productInfoKey">id:</span>
-                      <span className="productInfoValue">123</span>
-                  </div>
-                  <div className="productInfoItem">
-                      <span className="productInfoKey">sales:</span>
-                      <span className="productInfoValue">5123</span>
-                  </div>
-                  <div className="productInfoItem">
-                      <span className="productInfoKey">active:</span>
-                      <span className="productInfoValue">yes</span>
-                  </div>
-                  <div className="productInfoItem">
-                      <span className="productInfoKey">in stock:</span>
-                      <span className="productInfoValue">no</span>
-                  </div>
-              </div>
-          </div>
-      </div>
-      <div className="productBottom">
-          <form className="productForm">
-              <div className="productFormLeft">
-                  <label>Product Name</label>
-                  <input type="text" placeholder="Apple AirPod" />
-                  <label>In Stock</label>
-                  <select name="inStock" id="idStock">
-                      <option value="yes">Yes</option>
-                      <option value="no">No</option>
-                  </select>
-                  <label>Active</label>
-                  <select name="active" id="active">
-                      <option value="yes">Yes</option>
-                      <option value="no">No</option>
-                  </select>
-              </div>
-              <div className="productFormRight">
-                  <div className="productUpload">
-                      <img src="https://images.pexels.com/photos/7156886/pexels-photo-7156886.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" alt="" className="productUploadImg" />
-                      <label for="file">
-                          <Publish/>
-                      </label>
-                      <input type="file" id="file" style={{display:"none"}} />
-                  </div>
-                  <button className="productButton">Update</button>
-              </div>
-          </form>
-      </div>
-    </div>
-  );
+    const history = useHistory()
+    const { doctorId } = useParams()
+    const [avatar, setAvatar] = useState(null)
+    const [doctor, setDoctor] = useState({})
+    const [category, setCategory] = useState({})
+    const [cates, setCates] = useState([])
+    const [file, setFile] = useState(null)
+    
+    useEffect(() => {
+        async function fetchDoctor() {
+            const doctorData = await Api.get(`/doctors/detail/${doctorId}`)
+            setDoctor(doctorData.data)
+            const category = await Api.get(`/categories/${doctorData.data.cate_id}`)
+            setCategory(category.data)
+            const categories = await Api.get(`/categories/all`)
+            let newCateData = categories.data.map(item => {
+                return {
+                  label: item.categoryname,
+                  value: item._id
+                }
+            })
+            setCates(newCateData)
+            setAvatar(doctorData.data.img)
+        }
+        fetchDoctor()
+    }, [doctorId])
+
+    const handleFile = (e) => {
+        setFile(e.target.files[0])
+    }
+
+    const handleDelFile = () => {
+        setFile(null)
+    }
+
+    const handleBack = () => {
+        history.goBack()
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+
+        if (file) {
+            console.log("upload file to firebase");
+            const storageRef = ref(storage, `images/test/${file.name}`);
+            const desertRef = ref(storage, `images/test/${doctor.imgName}`);
+
+            // delete file firebase
+            deleteObject(desertRef)
+                .then(() => {
+                    console.log('deleted successfully');
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+
+            var metaData = {
+                contentType: 'image/*'
+            };
+            await uploadBytes(storageRef, file, metaData)
+                .then((snapshot) => {
+                    console.log('Uploaded successfully');
+                    setAvatar(URL.createObjectURL(file))
+                })
+                .catch((error) => error);
+
+            await getDownloadURL(ref(storage, `images/test/${file.name}`))
+                .then( async (url) => {
+                    try {
+                        let data = {
+                            img: url,
+                            imgName: file.name,
+                        }
+                        console.log(data);
+                        const handle = await Api.put(`/doctors/update/${doctorId}`, data)
+                        console.log(handle);
+                    } catch (error) {
+                        console.log(error);
+                    }
+                })
+        }
+    }
+
+    return (
+        <div className="product">
+            <div className="productTitleContainer">
+                <div className="productTitleBox">
+                    <KeyboardBackspace className="productIconBack" onClick={handleBack}/>
+                    <h1 className="productTitle">Bác sĩ</h1>
+                </div>
+                <Link to="/newDoctor">
+                    <button className="productAddButton">Thêm mới</button>
+                </Link>
+            </div>
+            <div className="productTop">
+                <div className="productTopLeft">
+                    <SimpleLineChart data={productData} dataKey={["Sales"]} title="Thu nhập" color={["green"]} />
+                </div>
+                <div className="productTopRight">
+                    <div className="productInfoTop">
+                        <img src={avatar} alt="" className="productInfoImg" />
+                        <span className="productName">{doctor.name}</span>
+                    </div>
+                    <div className="productInfoBottom">
+                        <div className="productInfoItem">
+                            <span className="productInfoKey">Đánh giá trung bình:</span>
+                            <span className="productInfoValue">{doctor.starAveraged}</span>
+                        </div>
+                        <div className="productInfoItem">
+                            <span className="productInfoKey">Số lượt đánh giá:</span>
+                            <span className="productInfoValue">{doctor.starNum}</span>
+                        </div>
+                        <div className="productInfoItem">
+                            <span className="productInfoKey">Ngày hoạt động:</span>
+                            <span className="productInfoValue">
+                                <Moment format="DD/MM/YYYY">
+                                    {doctor.createdAt}
+                                </Moment>
+                            </span>
+                        </div>
+                        <div className="productInfoItem">
+                            <span className="productInfoKey">Chuyên khoa: </span>
+                            <span className="productInfoValue">{category.categoryname}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="productBottom">
+                <div className="productFormLeft">
+                    <label>Cập nhật thông tin</label>
+                    <FormUpdate 
+                        inputs={inputDoctor} 
+                        schema={schema} 
+                        options={cates} 
+                        inputUrl={`/doctors/detail/${doctorId}`}
+                        serverUrl={`/doctors/update/${doctorId}`}
+                        returnUrl={`/doctors`}
+                    />
+                </div>
+            </div>
+            <div className="productBottom">
+                <form className="productForm" onSubmit={handleSubmit}>
+                    <div className="productFormRight">
+                    <label>Cập nhật ảnh đại diện</label>
+                        <div className="productUpload">
+                            <img src={file ? URL.createObjectURL(file) : avatar} alt="" className="productUploadImg" />
+                            {file ? 
+                            <label onClick={handleDelFile}>
+                                <Cancel />
+                            </label>
+                            :
+                            <label htmlFor="file">
+                                <Publish />
+                            </label>
+                            }
+                            <input type="file" id="file" style={{ display: "none" }} onChange={handleFile}/>
+                        </div>
+                        <button type="submit" className="buttonSubmit">Cập nhật</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    );
 }

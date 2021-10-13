@@ -1,6 +1,7 @@
 .userList {
-    flex: 4;
-  }
+    flex: 1;
+    padding: 40px 40px;
+}
   
 .userListUser {
     display: flex;
@@ -28,4 +29,23 @@
 .userListDelete{
     color: red;
     cursor: pointer;
+}
+
+.userListControll {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin: 10px;
+}
+
+.btnAddUser {
+    background-color: darkblue;
+    border-radius: 50px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 20px;
 }
