@@ -13,11 +13,8 @@ import {
     Radio, 
     RadioGroup, 
 } from '@mui/material';
-import { useHistory } from 'react-router';
 
-export default function FormUpdate({ inputs, schema, options, inputUrl, serverUrl, returnUrl }) {
-    const history = useHistory();
-    const [name, setName] = useState('');
+export default function FormUpdate({ inputs, schema, options, inputUrl, serverUrl, openModal }) {
     const [data, setData] = useState([])
 
     const { register, handleSubmit, formState: { errors } } = useForm({
@@ -28,12 +25,9 @@ export default function FormUpdate({ inputs, schema, options, inputUrl, serverUr
         console.log(data);
         const update = await Api.put(serverUrl, data)
         console.log(update);
-        history.push(returnUrl);
+        openModal()
+        // history.push(returnUrl);
     } 
-
-    const handleChange = (event) => {
-        setName(event.target.value);
-    };
 
     useEffect(() => {
         async function getData() {
@@ -49,7 +43,7 @@ export default function FormUpdate({ inputs, schema, options, inputUrl, serverUr
             setData(newData)
         }
         getData()
-    }, [])
+    }, [inputUrl, inputs])
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="form">
@@ -110,19 +104,19 @@ export default function FormUpdate({ inputs, schema, options, inputUrl, serverUr
                                 <FormGroup>
                                     <FormControlLabel
                                         control={
-                                            <Checkbox onChange={handleChange} name="gilad" {...register(input.name)} value={1}/>
+                                            <Checkbox name="gilad" {...register(input.name)} value={1}/>
                                         }
                                         label="Gilad Gray"
                                     />
                                     <FormControlLabel
                                         control={
-                                            <Checkbox onChange={handleChange} name="jason" {...register(input.name)} value={2}/>
+                                            <Checkbox name="jason" {...register(input.name)} value={2}/>
                                         }
                                         label="Jason Killian"
                                     />
                                     <FormControlLabel
                                         control={
-                                            <Checkbox onChange={handleChange} name="antoine" {...register(input.name)} value={3}/>
+                                            <Checkbox name="antoine" {...register(input.name)} value={3}/>
                                         }
                                         label="Antoine Llorca"
                                     />

@@ -2,7 +2,6 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup';
 import TextField from '@mui/material/TextField';
 import "./form.css"
-import { useState } from 'react';
 import Api from '../../util/Api'
 import { 
     Checkbox, 
@@ -17,9 +16,8 @@ import { useHistory } from 'react-router';
 import storage from '../../firebase'
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
-export default function FormCreate({ inputs, schema, options, file, firebaseUrl, serverUrl, returnUrl }) {
+export default function FormCreate({ inputs, schema, options, file, serverUrl, returnUrl }) {
     const history = useHistory();
-    const [name, setName] = useState('');
 
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema)
@@ -50,7 +48,7 @@ export default function FormCreate({ inputs, schema, options, file, firebaseUrl,
                             imgName: file.name,
                         }
                         console.log(data);
-                        const handle = await Api.post(serverUrl, data)
+                        await Api.post(serverUrl, data)
                         history.push(returnUrl);
                     } catch (error) {
                         console.log(error);
@@ -60,10 +58,6 @@ export default function FormCreate({ inputs, schema, options, file, firebaseUrl,
             
         }
     }
-
-    const handleChange = (event) => {
-        setName(event.target.value);
-    };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="form">
@@ -115,19 +109,19 @@ export default function FormCreate({ inputs, schema, options, file, firebaseUrl,
                                 <FormGroup>
                                     <FormControlLabel
                                         control={
-                                            <Checkbox onChange={handleChange} name="gilad" {...register(input.name)} value={1}/>
+                                            <Checkbox name="gilad" {...register(input.name)} value={1}/>
                                         }
                                         label="Gilad Gray"
                                     />
                                     <FormControlLabel
                                         control={
-                                            <Checkbox onChange={handleChange} name="jason" {...register(input.name)} value={2}/>
+                                            <Checkbox name="jason" {...register(input.name)} value={2}/>
                                         }
                                         label="Jason Killian"
                                     />
                                     <FormControlLabel
                                         control={
-                                            <Checkbox onChange={handleChange} name="antoine" {...register(input.name)} value={3}/>
+                                            <Checkbox name="antoine" {...register(input.name)} value={3}/>
                                         }
                                         label="Antoine Llorca"
                                     />

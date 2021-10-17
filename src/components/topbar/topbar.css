@@ -55,3 +55,36 @@
     border-radius: 50%;
     cursor: pointer;
 }
+
+.topbarAcount {
+    position: relative;
+}
+
+.topbarListItem {
+    position: absolute;
+    top: 100%;
+    left: -130px;
+    display: none;
+    padding: 0;
+    list-style: none;
+    background-color: white;
+    color: #333;
+    box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+    border-radius: 10px;
+    overflow: hidden;
+    z-index: 999;
+    cursor: pointer;
+}
+
+.topbarAcount:hover .topbarListItem {
+    display: block;
+}
+
+.topbarItem {
+    padding: 10px 14px;
+    width: 150px;
+}
+
+.topbarItem:hover {
+    background-color: #ddd;
+}

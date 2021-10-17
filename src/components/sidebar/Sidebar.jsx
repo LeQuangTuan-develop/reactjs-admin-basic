@@ -76,10 +76,12 @@ export default function Sidebar() {
                             <DynamicFeed className="sidebarIcon" />
                             Phản hồi
                         </li>
+                        <Link to="/messenger" className="link">
                         <li className="sidebarListItem">
                             <ChatBubbleOutline className="sidebarIcon" />
                             Tin nhắn
                         </li>
+                        </Link>
                     </ul>
                 </div>
                 <div className="sidebarMenu">

@@ -2,12 +2,9 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup';
 import TextField from '@mui/material/TextField';
 import "./form.css"
-import { useState } from 'react';
-import Api from '../../util/Api'
 import { Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Radio, RadioGroup } from '@mui/material';
 
 export default function Form({ inputs, schema, options }) {
-    const [name, setName] = useState('');
 
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema)
@@ -37,10 +34,6 @@ export default function Form({ inputs, schema, options }) {
             label: 'Khác',
         },
     ];
-
-    const handleChange = (event) => {
-        setName(event.target.value);
-    };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="form">
@@ -75,19 +68,19 @@ export default function Form({ inputs, schema, options }) {
                                 <FormGroup>
                                     <FormControlLabel
                                         control={
-                                            <Checkbox onChange={handleChange} name="gilad" {...register(input.name)} value={1}/>
+                                            <Checkbox name="gilad" {...register(input.name)} value={1}/>
                                         }
                                         label="Gilad Gray"
                                     />
                                     <FormControlLabel
                                         control={
-                                            <Checkbox onChange={handleChange} name="jason" {...register(input.name)} value={2}/>
+                                            <Checkbox name="jason" {...register(input.name)} value={2}/>
                                         }
                                         label="Jason Killian"
                                     />
                                     <FormControlLabel
                                         control={
-                                            <Checkbox onChange={handleChange} name="antoine" {...register(input.name)} value={3}/>
+                                            <Checkbox name="antoine" {...register(input.name)} value={3}/>
                                         }
                                         label="Antoine Llorca"
                                     />

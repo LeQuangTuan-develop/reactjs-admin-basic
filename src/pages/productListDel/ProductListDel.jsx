@@ -1,6 +1,6 @@
-import "./productList.css";
+import "./productListDel.css";
 import { DataGrid } from "@mui/x-data-grid";
-import { DeleteOutline } from "@mui/icons-material";
+import { DeleteOutline, RestoreFromTrash } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Api from "../../util/Api"
@@ -9,16 +9,23 @@ import AlertDialog from "../../components/modal/Alert"
 export default function ProductList() {
   const [data, setData] = useState([]);
   const [isOpen, setIsOpen] = useState(false)
+  const [isOpenRestore, setIsOpenRestore] = useState(false)
   const [id, setId] = useState(null)
+  const [restoreId, setRestoreId] = useState(null)
 
   const handleDelete = (id) => {
     setIsOpen(true)
     setId(id)
   };
 
+  const handleRestore = (id) => {
+    setIsOpenRestore(true)
+    setRestoreId(id)
+  }
+
   useEffect(() => {
     const fetchDoctors = async () => {
-        const doctors = await Api.get('/doctors/all')
+        const doctors = await Api.get('/doctors/store')
         const categories = await Api.get('/categories/all')
         let doctorsData = doctors.data
         let catesData = categories.data
@@ -70,13 +77,14 @@ export default function ProductList() {
     {
       field: "action",
       headerName: "Thực hiện",
-      width: 150,
+      width: 180,
       renderCell: (params) => {
         return (
           <>
-            <Link to={"/doctor/" + params.row._id} className="link">
-              <button className="productListEdit">Chỉnh sửa</button>
-            </Link>
+            <button className="productListEdit" onClick={() => handleRestore(params.row._id)}>
+                Khôi phục
+                <RestoreFromTrash />
+            </button>
             <DeleteOutline
               className="productListDelete"
               onClick={() => handleDelete(params.row._id)}
@@ -91,13 +99,10 @@ export default function ProductList() {
     <>
     <div className="productList" style={{ height: 550, width: '100%' }}>
       <div className="productHeader">
-        <h2>Danh sách bác sĩ</h2>
+        <h2>Danh sách bác sĩ được lưu trữ</h2>
         <div className="doctorListControll">
-            <Link to={`/doctors/store`}>
-              <button className="btnStoreDoctor">Lưu trữ</button>
-            </Link>
-            <Link to={`/newDoctor`}>
-            <button className="btnAddDoctor">Thêm mới</button>
+            <Link to={`/doctors`}>
+            <button className="btnAddDoctor">Danh sách</button>
             </Link>
         </div>
       </div>
@@ -111,16 +116,30 @@ export default function ProductList() {
       />
     </div>
     <AlertDialog 
-      title="Xóa bác sĩ ?"
+      title="Xóa vĩnh viễn bác sĩ ?"
       isOpen={isOpen}
+      cancelBtn="Hủy bỏ"
       handleClose={() => setIsOpen(false)}
       handleOK={ async () => {
         setData(data.filter((item) => item._id !== id));
-        await Api.delete(`/doctors/delete/${id}`)
+        await Api.delete(`/doctors/destroy/${id}`)
         setIsOpen(false)
       }}
     >
-      Bạn muốn xóa bác sĩ này
+      Bạn chắc chắn xóa bác sĩ này vĩnh viễn
+    </AlertDialog>
+    <AlertDialog 
+      title="Khôi phục bác sĩ ?"
+      isOpen={isOpenRestore}
+      cancelBtn="Hủy bỏ"
+      handleClose={() => setIsOpenRestore(false)}
+      handleOK={ async () => {
+        setData(data.filter((item) => item._id !== restoreId));
+        await Api.patch(`/doctors/restore/${restoreId}`)
+        setIsOpenRestore(false)
+      }}
+    >
+      Bạn muốn khôi phục bác sĩ này
     </AlertDialog>
     </>
   );

@@ -1,16 +1,17 @@
-import { Link } from "react-router-dom"
 import "./product.css"
+import { useEffect, useState } from "react"
+import { Link } from "react-router-dom"
+import Moment from 'react-moment'
+import { useHistory, useParams } from "react-router"
+import { ref, uploadBytes, getDownloadURL, deleteObject  } from "firebase/storage";
+import { Publish, Cancel, KeyboardBackspace } from "@mui/icons-material"
 import SimpleLineChart from "../../components/chart/SimpleLineChart"
 import { productData } from "../../dummyData"
-import { Publish, Cancel, KeyboardBackspace } from "@mui/icons-material"
-import { useHistory, useParams } from "react-router"
-import { useEffect, useState } from "react"
 import Api from "../../util/Api"
-import Moment from 'react-moment'
 import { inputDoctor, schema } from "../../static/inputDoctor"
 import FormUpdate from "../../components/inputs/FormUpdate"
 import storage from '../../firebase'
-import { ref, uploadBytes, getDownloadURL, deleteObject  } from "firebase/storage";
+import AlertDialog from "../../components/modal/Alert"
 
 export default function Product() {
     const history = useHistory()
@@ -20,6 +21,8 @@ export default function Product() {
     const [category, setCategory] = useState({})
     const [cates, setCates] = useState([])
     const [file, setFile] = useState(null)
+    const [isOpenInfoModal, setIsOpenInfoModal] = useState(null) 
+    const [isOpenAvarModal, setIsOpenAvarModal] = useState(null)
     
     useEffect(() => {
         async function fetchDoctor() {
@@ -89,6 +92,7 @@ export default function Product() {
                         console.log(data);
                         const handle = await Api.put(`/doctors/update/${doctorId}`, data)
                         console.log(handle);
+                        setIsOpenAvarModal(true)
                     } catch (error) {
                         console.log(error);
                     }
@@ -97,6 +101,7 @@ export default function Product() {
     }
 
     return (
+        <>
         <div className="product">
             <div className="productTitleContainer">
                 <div className="productTitleBox">
@@ -150,6 +155,7 @@ export default function Product() {
                         inputUrl={`/doctors/detail/${doctorId}`}
                         serverUrl={`/doctors/update/${doctorId}`}
                         returnUrl={`/doctors`}
+                        openModal={() => setIsOpenInfoModal(true)}
                     />
                 </div>
             </div>
@@ -175,5 +181,22 @@ export default function Product() {
                 </form>
             </div>
         </div>
+        <AlertDialog 
+            title="Cập nhật"
+            isOpen={isOpenInfoModal}
+            handleClose={() => setIsOpenInfoModal(false)}
+            handleOK={() => setIsOpenInfoModal(false)}
+        >
+            Cập nhật thông tin bác sĩ thành công
+        </AlertDialog>
+        <AlertDialog 
+            title="Cập nhật"
+            isOpen={isOpenAvarModal}
+            handleClose={() => setIsOpenAvarModal(false)}
+            handleOK={() => setIsOpenAvarModal(false)}
+        >
+            Cập nhật ảnh đại diện bác sĩ thành công
+        </AlertDialog>
+        </>
     );
 }

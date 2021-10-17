@@ -21,7 +21,6 @@ export default function UserList() {
     }, [])
 
     const columns = [
-        { field: 'id', headerName: 'STT', width: 100 },
         { 
             field: "username", 
             headerName: "Khách hàng",

@@ -9,6 +9,7 @@ import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
+import './modal.css'
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -48,30 +49,17 @@ BootstrapDialogTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-export default function CustomizedDialogs({children, handleOpen}) {
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  }
-
-  const handleClose = () => {
-    setOpen(false);
-  }
-
-  const handleOK = () => {
-
-  }
+export default function CustomizedDialogs({title, children, isOpen, cancelBtn, handleClose, handleOK}) {
 
   return (
     <div>
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
-        open={open}
+        open={isOpen}
       >
         <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
-          Modal title
+          {title}
         </BootstrapDialogTitle>
         <DialogContent dividers>
           <Typography gutterBottom>
@@ -79,11 +67,13 @@ export default function CustomizedDialogs({children, handleOpen}) {
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleClose}>
-            Hủy bỏ
+          {cancelBtn &&
+          <Button autoFocus className="cancelBtnModal" onClick={handleClose}>
+            {cancelBtn}
           </Button>
+          }
           <Button autoFocus onClick={handleOK}>
-            Đồng ý
+            OK
           </Button>
         </DialogActions>
       </BootstrapDialog>
